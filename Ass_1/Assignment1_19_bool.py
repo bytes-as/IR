@@ -32,11 +32,13 @@ def makeBoolFile(model, queries):
 	return document_bool
 
 def writeBooleanFile(res):
+	print('[RESULTS WRITING] Started with file path: Assignment1_' + str(GROUP_NUMBER) + '_results.txt')
 	with open('Assignment1_' + str(GROUP_NUMBER) + '_results.txt', 'w') as writeFile:
 		for key in res:
 			writeFile.write(str(key)+':')
 			writeFile.write(" ".join(str(val) for val in res[key]))
 			writeFile.write('\n')
+	print('[RESULTS WRITING] COMPLETED. Assignment1_' + str(GROUP_NUMBER) + '_results.txt')
 
 def main(MODEL_PATH, QUERY_PATH):
 	model = readModel(MODEL_PATH)

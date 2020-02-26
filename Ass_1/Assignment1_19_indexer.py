@@ -98,18 +98,20 @@ def generateInvertIndex(articles, total=10000000):
     invertedIndex = {}
     if not isinstance(articles, list):
         raise Exception('Expecting a list of object of type <Article>, got {}'.format(str(type(articles))))
+    print('[Generating Invert Index] Input : {}'.format(len(articles)))
     count = 0
+    # total_words_count = 0
     for article in articles:
         if not isinstance(article, Article):
             raise Exception('Expecting a object of the type <Article>, not {}'.format(type(article)))
         article.processText(verbose=False)
         for word in article.words:
+            # total_words_count += 1
             if word not in invertedIndex:
                 invertedIndex[word] = [article.id]
             else:
                 invertedIndex[word].append(article.id)
         count += 1
-        break
         if count % 100 == 0:
             print("Articles {}/{} completed...".format(count, total))
     return invertedIndex
@@ -131,11 +133,11 @@ def main(FILES_PATH, args):
             except:
                 # print('leaving the file of path:', file_path)
                 pass
-            if count % 100 == 0:
+            if count % 500 == 0:
                 print(count, 'files readed')
             count += 1
             # break
-    print('[READING FILES]: finished')
+    print('[READING FILES]: finished', end=' ')
     print(len(articles),'/', count)
     invert_index = generateInvertIndex(articles, total = count)
     # sorting before writing
@@ -143,8 +145,8 @@ def main(FILES_PATH, args):
     sorted_keys.sort()
     invert_index = {key: invert_index[key] for key in sorted_keys}
     print('[WRITING FILE]: strating....')
-    print(invert_index)
-    print(type(invert_index))
+    # print(invert_index)
+    # print(type(invert_index))
     write_file = './model_queries_' + str(GROUP_NUMBER) + '.pth' 
     with open(write_file, 'wb') as writeFile:
         pickle.dump(invert_index, writeFile)
